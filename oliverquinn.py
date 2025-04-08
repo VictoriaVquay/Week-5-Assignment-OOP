@@ -1,0 +1,59 @@
+# Base class representing a general gadget
+class Gadget:
+    # Constructor (__init__) initializes the gadget with name, owner, and power level
+    def __init__(self, name, owner, power_level):
+        self.name = name              # name of the gadget (e.g., "Trick Arrow")
+        self.owner = owner            # owner of the gadget (e.g., "Green Arrow")
+        self.__power_level = power_level  # encapsulated attribute for power level (private)
+
+    # Method to activate the gadget
+    def activate(self):
+        return f"{self.owner} activates the {self.name}!"  # Action when gadget is used
+
+    # Getter method for encapsulated power level
+    def get_power_level(self):
+        return self.__power_level  # Returns the power level of the gadget
+
+    # Setter method for updating the power level
+    def set_power_level(self, level):
+        if level >= 0:
+            self.__power_level = level  # Sets a new power level if it’s valid (>= 0)
+
+# Subclass representing a weapon gadget (inherits from Gadget)
+class WeaponGadget(Gadget):
+    # Constructor (__init__) initializes weapon gadget with extra 'damage' attribute
+    def __init__(self, name, owner, power_level, damage):
+        super().__init__(name, owner, power_level)  # Call the base class (Gadget) constructor
+        self.damage = damage  # Additional attribute specific to WeaponGadget
+
+    # Overridden method to customize the activation for weapon gadgets (polymorphism)
+    def activate(self):
+        return f"{self.owner} fires the {self.name}, causing {self.damage} damage!"  # Action when weapon is used
+
+# Class representing a superhero who has a gadget
+class Superhero:
+    # Constructor (__init__) initializes the superhero with a name, alias, and gadget
+    def __init__(self, real_name, alias, gadget):
+        self.real_name = real_name  # Superhero’s real name (e.g., "Oliver Quinn")
+        self.alias = alias          # Superhero’s alias (e.g., "Green Arrow")
+        self.gadget = gadget        # The gadget the superhero uses (WeaponGadget or others)
+
+    # Method for the superhero to introduce themselves
+    def intro(self):
+        return f"My name is  {self.real_name}, known as {self.alias}!"  # Intro message
+
+    # Method to use the gadget (demonstrating polymorphism)
+    def use_gadget(self):
+        return self.gadget.activate()  # Calls the activate method of the gadget, demonstrating polymorphism
+# Create the Arrow gadget (WeaponGadget)
+arrow = WeaponGadget(name="Trick Arrow", owner="Green Arrow", power_level=85, damage=120)
+
+# Create Oliver Quinn (Superhero) using the Arrow gadget
+oliver = Superhero(real_name="Oliver Quinn", alias="Green Arrow", gadget=arrow)
+
+# Testing: Call methods to see results
+print(oliver.intro())          # Output: I am Oliver Quinn, known as Green Arrow!
+print(oliver.use_gadget())     # Output: Green Arrow fires the Trick Arrow, causing 120 damage!
+print(arrow.get_power_level()) # Output: 85
+arrow.set_power_level(95)     # Update the power level
+print(arrow.get_power_level()) # Output: 95
